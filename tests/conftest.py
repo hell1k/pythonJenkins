@@ -1,32 +1,20 @@
 import pytest
-from selenium import webdriver
-import json
-import os
-import time
-
-import allure
-import pytest
-from selene import config
-from selene.api import browser
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service as ChromeService
 
 from selenium import webdriver
-from selenium.webdriver.common.by import By
-
-from pages.base_page import BasePage
 
 
 @pytest.fixture(scope="session")
 def setup():
     options = webdriver.ChromeOptions()
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
-    #driver = webdriver.Chrome(executable_path="C:/Python310/chromedriver118.exe", options=options)
+    options.add_argument("--headless")
+    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
+    # driver = webdriver.Chrome(executable_path="C:/Python310/chromedriver118.exe", options=options)
     driver.maximize_window()
     driver.implicitly_wait(5)
     yield driver
     driver.quit()
-
 
 # def setup_browser():
 #     options = webdriver.ChromeOptions()
@@ -63,5 +51,3 @@ def setup():
 #             allure.attach(json.dumps(console_log), name="Логи консоли", attachment_type=allure.attachment_type.JSON)
 #         except:
 #             pass
-
-
